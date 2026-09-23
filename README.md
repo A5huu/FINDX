@@ -98,42 +98,6 @@ The project will be built in small modules instead of writing the entire search 
 11. User Interface
 12. Testing and Optimization
 
-## Current Module
-
-The first development module is the **Text Extraction Module**.
-
-It reads a text file character by character, builds words, converts them to lowercase, removes basic stop words, and produces clean words for the indexing module.
-
-See:
-
-- [`extractor.md`](extractor.md)
-- [`PRD.md`](PRD.md)
-
-## Example
-
-Input:
-
-```text
-Machine learning is useful for data science.
-Machine learning uses Python.
-```
-
-Clean output:
-
-```text
-machine
-learning
-useful
-data
-science
-machine
-learning
-uses
-python
-```
-
-Later, these words will no longer simply be printed. They will be passed to the indexing system.
-
 ## Project Goal
 
 The final goal is to have a working local search engine that demonstrates important DSA concepts through a practical application.
