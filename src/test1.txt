@@ -1,0 +1,6 @@
+Machine Learning is a branch of AI that uses data and algorithms to let computers learn and make predictions without being explicitly programmed for every task.
+Machine learning is useful for data science.
+machine Learning uses python.
+machine LEarning uses SKLEARN.
+
+this Is a test run for the text extractor. This doc should only take 2-3 sec. if not were screwed ig
