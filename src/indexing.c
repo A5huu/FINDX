@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "indexing.h"
+#include "hash.h"
 
 DocNode *createDocNode(const char *filename)
 {
@@ -29,6 +30,7 @@ WordNode *createWordNode(const char *word)
     strcpy(new_node->word, word);
     new_node->document = NULL;
     new_node->next = NULL;
+    new_node->hashnext = NULL;
     return new_node;
 }
 
@@ -82,6 +84,7 @@ void insertWord(WordNode **head,
     addDocument(new_word, filename);
     new_word->next = *head;
     *head = new_word;
+    insertHash(new_word);
 }
 
 //utility function to verify

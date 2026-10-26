@@ -11,6 +11,7 @@ typedef struct WordNode{
     char word[100];
     DocNode *document;
     struct WordNode *next;
+    struct WordNode *hashnext;
 } WordNode;
 
 //Word functions
