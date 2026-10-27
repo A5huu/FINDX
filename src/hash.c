@@ -33,3 +33,19 @@ void insertHash(WordNode *node)
     node->hashnext = Hash_table[index];
     Hash_table[index] = node;
 }
+
+//utility fucntion 
+WordNode *lookUpHash(const char *word)
+{
+    int index = hashFunction(word);
+    WordNode *current = Hash_table[index];
+    while(current != NULL)
+    {
+        if(strcmp(word, current->word) == 0)
+        {
+            return current;
+        }
+        current = current->hashnext;
+    }
+    return NULL;
+}

@@ -4,6 +4,8 @@
 #include "indexing.h"
 #include "hash.h"
 
+WordNode *wordHead = NULL;
+
 DocNode *createDocNode(const char *filename)
 {
     DocNode *new_node = (DocNode *)malloc(sizeof(DocNode));
@@ -63,27 +65,27 @@ void insertWord(WordNode **head,
                 const char *word,
                 const char *filename)
 {
-    WordNode *temp = *head;
-    //check if word already exists
-    while(temp != NULL)
+    //check if word already exisst in hash bucekt
+    WordNode *existing_word = lookUpHash(word);
+    if(existing_word != NULL)
     {
-        if(strcmp(temp->word, word) == 0)
-        {
-            //update if it already exist
-            addDocument(temp ,filename);
-            return;
-        }
-        temp = temp->next;
+        addDocument(existing_word, filename);
+        return;
     }
     //word does not exist so cerate new
     WordNode *new_word = createWordNode(word);
     if(new_word == NULL)
+    {
+        printf("\nAn error occured while allocating the memory!");
         return;
-    
+    }
+
     //add document containing the word to the list
     addDocument(new_word, filename);
     new_word->next = *head;
     *head = new_word;
+
+    //add word node to the hasmap
     insertHash(new_word);
 }
 

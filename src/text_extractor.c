@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include "indexing.h"
 #include "text_extractor.h"
 
 const char *filler[] = {
@@ -78,7 +79,7 @@ void extractText(const char *filename)
                 //check for filler
                 if(!isFiller(word))
                 {
-                    printf("%s\n", word);
+                    insertWord(&wordHead, word, filename);
                 }
                 //reset buffer
                 index = 0;
@@ -92,7 +93,7 @@ void extractText(const char *filename)
 
         if (!isFiller(word))
         {
-            printf("%s\n", word);
+            insertWord(&wordHead, word, filename);
         }
     }
     //close file

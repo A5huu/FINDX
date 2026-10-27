@@ -22,6 +22,8 @@ void insertWord(WordNode **head,
                 const char *word,
                 const char *filename);
 
+extern WordNode *wordHead;
+
 //document functions
 
 DocNode *createDocNode(const char *filename);
