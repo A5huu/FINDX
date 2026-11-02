@@ -34,4 +34,6 @@ void addDocument(WordNode *wordNode,
 //utility function
 
 void displayIndex(WordNode *head);
+
+void searchWord(const char *word);
 #endif

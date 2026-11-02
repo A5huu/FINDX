@@ -8,5 +8,8 @@ int main()
     extractText("test1.txt");
     extractText("test2.txt");
     displayIndex(wordHead);
+    searchWord("MAChine");
+    searchWord("LEArniNg");
+    searchWord("Random");
     return 0;
 }

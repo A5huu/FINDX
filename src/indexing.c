@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include<ctype.h>
 #include <string.h>
 #include "indexing.h"
 #include "hash.h"
@@ -105,5 +106,42 @@ void displayIndex(WordNode *head)
             doc_current = doc_current->next;
         }
         word_current = word_current->next;
+    }
+}
+
+void searchWord(const char *word)
+{
+    char normalized[100];
+    int i = 0;
+    //normalize search qeury to lowercase
+    while( word[i] != '\0' && i < 99)
+    {
+        normalized[i] = tolower((unsigned char)word[i]);
+        i++;
+    } 
+
+    if(word[i] != '\0')
+    {
+        printf("\nSearch query is too long.\n");
+        return;
+    }
+    
+    normalized[i] = '\0';
+    //find word using the hash table
+    WordNode *found = lookUpHash(normalized);
+
+    if(found == NULL)
+    {
+        ("\n No result found for : %s", word);
+        return;
+    }
+    //display the result
+    printf("\nSearch result for :%s\n", word);
+    DocNode *current = found->document;
+
+    while(current != NULL)
+    {
+        printf("Documents: %s | Frequency: %d\n",current->filename,current->frequency);
+        current = current->next;
     }
 }
