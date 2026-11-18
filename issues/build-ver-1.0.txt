@@ -1,0 +1,73 @@
+Issue 
+Q1. Machine learning - in this one I think the test.txt should be above as it is more relevant and important information about machine learning
+
+Q2. machine learning lets computer - in this one it says matched 4/5 which is wrong how tf there are 4/5 matches in a 4 word query. also it shoulve displayed test1.txt because that is what I was trying to get.
+
+Q3. machine learning is a branch - same problem as Q2 for this too now we have to fix these problems 
+
+
+
+
+//////////////////////////
+terminal run :
+
+
+PS C:\Projects\PBL\src> .\findx.exe
+[FINDX] Initializing and indexing documents...
+[FINDX] Indexing complete
+==================================================
+ FINDX Local Search Engine (Type 'exit' to quit)
+==================================================
+Search query: machine learning
+
+==================================================
+SEARCH RESULTS FOR: "machine learning"
+
+==================================================
+
+[1] File: test2.txt | Score: 3008 (Matched: 3/2 terms), Freq: 8)
+    Line 1: machine learning is very popular in current time.
+
+[2] File: test1.txt | Score: 1004 (Matched: 1/2 terms), Freq: 4)
+    Line 1: Machine Learning is a branch of AI that uses data and algorithms to let computers learn and make predictions without being explicitly programmed for every task.
+
+==================================================
+
+==================================================
+ FINDX Local Search Engine (Type 'exit' to quit)
+==================================================
+Search query: machine learning let computers
+
+==================================================
+SEARCH RESULTS FOR: "machine learning let computers"
+
+==================================================
+
+[1] File: test2.txt | Score: 5010 (Matched: 5/4 terms), Freq: 10)
+    Line 1: machine learning is very popular in current time.
+
+==================================================
+
+==================================================
+ FINDX Local Search Engine (Type 'exit' to quit)
+==================================================
+Search query: machine learning is a branch
+
+==================================================
+SEARCH RESULTS FOR: "machine learning is a branch"
+
+==================================================
+
+[1] File: test2.txt | Score: 4009 (Matched: 4/3 terms), Freq: 9)
+    Line 1: machine learning is very popular in current time.
+
+==================================================
+
+==================================================
+ FINDX Local Search Engine (Type 'exit' to quit)
+==================================================
+Search query: exit
+
+Existing FINDX......
+PS C:\Projects\PBL\src>
+//////////////////////////
