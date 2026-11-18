@@ -4,6 +4,7 @@
 #include "text_extractor.h"
 #include "hash.h"
 #include "indexing.h"
+#include "folderscanner.h"
 
 int main()
 {
@@ -11,8 +12,7 @@ int main()
     initHashTable();
 
     printf("[FINDX] Initializing and indexing documents...\n");
-    extractText("test1.txt");
-    extractText("test2.txt");
+    scanDirectory("documents");
     printf("[FINDX] Indexing complete");
     char query[200];
 
@@ -35,12 +35,24 @@ int main()
             break;
         }
 
+        if(strcmp(query, "history") == 0)
+        {
+            displayHistory();
+            continue;
+        }
+        
+        if(strlen(query) == 0)
+        {
+            continue;
+        }
+
         //ignore empty inputs
         if(strlen(query) == 0)
         {
             continue;
         }
 
+        pushHistory(query);
         //execute the full multiword search
         searchMultiWord(query);
     }

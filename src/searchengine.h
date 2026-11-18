@@ -11,6 +11,16 @@ typedef struct SearchCandidate{
     int exact_match;
 } SearchCandidate;
 
+typedef struct HistoryNode
+{
+    char query[200];
+    struct HistoryNode *next;
+} HistoryNode;
+
+void initHistoryStack();
+void pushHistory(const char *query);
+void displayHistory();
+
 //tokenize text query
 int tokenizeQuery(const char *query, char tokens[][100], int max_token_size);
 

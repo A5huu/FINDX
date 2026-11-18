@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <ctype.h>
 #include "hash.h"
 #include "indexing.h"
@@ -140,8 +141,8 @@ int checkExactPhrase(DocNode *doc, char filtered[][100], int filtered_count)
 int calculateScore(SearchCandidate *candidate)
 {
     int score = 0;
-    if(candidate->exact_match) score += 100000;
-    score += (candidate->matched_terms_count * 1000);
+    if(candidate->exact_match) score += 1000000;
+    score += (candidate->matched_terms_count * 10000);
     score += candidate->total_frequency;
     return score;
  }
@@ -182,6 +183,12 @@ int calculateScore(SearchCandidate *candidate)
     //build Max- Heap
     for(int i = n / 2 - 1; i >= 0; i--)
     {
+        heapify(candidates, n, i);
+    }
+
+    //extract element from heap
+    for(int i = n - 1; i > 0; i--)
+    {
         SearchCandidate temp = candidates[0];
         candidates[0] = candidates[i];
         candidates[i] = temp;
@@ -201,7 +208,7 @@ int calculateScore(SearchCandidate *candidate)
 
     if(fseek(file, offset, SEEK_SET) != 0)
     {
-        printf("    [Snippet unavailable: Seek Failed]\n", filename);
+        printf("    [Snippet unavailable: Seek Failed for %s]\n", filename);
         fclose(file);
         return;
     }
@@ -265,7 +272,7 @@ int calculateScore(SearchCandidate *candidate)
                 {
                     if(strcmp(candidates[c].filename, doc_curr->filename) == 0)
                     {
-                        found_idx = 0;
+                        found_idx = c;
                         break;
                     }
                 }
@@ -348,10 +355,13 @@ int calculateScore(SearchCandidate *candidate)
     printf("\n==================================================\n");
     printf("SEARCH RESULTS FOR: \"%s\"\n", query);
     printf("\n==================================================\n");
-    for(int c = 0; c < surviving_count; c++)
+    
+    int rank = 1;
+    for(int c = surviving_count - 1; c >= 0; c--)
     {
         printf("\n[%d] File: %s | Score: %d (Matched: %d/%d terms), Freq: %d%s)\n",
-        c + 1, surviving[c].filename,
+        rank++,
+        surviving[c].filename,
         calculateScore(&surviving[c]),
         surviving[c].matched_terms_count,
         filtered_count,
@@ -374,6 +384,45 @@ int calculateScore(SearchCandidate *candidate)
         }
     }
     printf("\n==================================================\n");
+}
+
+static HistoryNode *top = NULL;
+void initHistoryStack()
+{
+    top = NULL;
+}
+
+//push new query onto to the history stacl
+void pushHistory(const char *query)
+{
+    HistoryNode *new_node = (HistoryNode *)malloc(sizeof(HistoryNode));
+    if(!new_node) return;
+
+    strcpy(new_node->query, query);
+    new_node->next = top;
+    top = new_node;
+}
+
+void displayHistory()
+{
+    if(top == NULL)
+    {
+        printf("\n[Search History is Empty]\n");
+        return;
+    }
+
+    printf("\n==================================================\n");
+    printf(" SEARCH HISTORY \n");
+    printf("==================================================\n");
+    
+    HistoryNode *curr = top;
+    int index = 1;
+    while(curr != NULL)
+    {
+        printf(" [%d] %s\n", index++, curr->query);
+        curr = curr->next;
+    } 
+    printf("==================================================\n");
 }
 
 

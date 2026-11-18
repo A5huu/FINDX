@@ -184,7 +184,7 @@ void searchWord(const char *word)
 
     if(found == NULL)
     {
-        ("\n No result found for : %s", word);
+        printf("\n No result found for : %s", word);
         return;
     }
     //display the result

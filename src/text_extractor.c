@@ -36,7 +36,7 @@ const char *filler[] = {
 //function to check filler word
 int isFiller(const char *word)
 {
-    for(int i = 0; i < FILLER_COUNT; i++ ){
+    for(size_t i = 0; i < FILLER_COUNT; i++ ){
         if(strcmp(word, filler[i]) == 0){
             return 1;
         }
@@ -69,7 +69,7 @@ void extractText(const char *filename)
             if(index < 99)
             {
                 //convert to lower and store
-                word[index] = tolower((unsigned char)ch);
+                word[index] = (char)tolower((unsigned char)ch);
                 index++;
             }
         }
@@ -81,7 +81,8 @@ void extractText(const char *filename)
 
                 //check for filler
                 if(!isFiller(word))
-                {
+                {   
+                    seq++;
                     insertWord(&wordHead, word, filename, line, offset, seq);
                 }
                 //reset buffer
@@ -101,6 +102,7 @@ void extractText(const char *filename)
 
         if (!isFiller(word))
         {
+            seq++;
             insertWord(&wordHead, word, filename, line, offset, seq);
         }
     }
