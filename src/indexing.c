@@ -18,6 +18,8 @@ DocNode *createDocNode(const char *filename)
     }
     strcpy(new_node->filename, filename);
     new_node->frequency = 1;
+    new_node->positions = NULL;
+    new_node->postail = NULL;
     new_node->next = NULL;
     return new_node;
 }
@@ -37,9 +39,39 @@ WordNode *createWordNode(const char *word)
     return new_node;
 }
 
+PosNode *createPosNode(int line, long offset, int seq)
+{
+    PosNode *new_node = (PosNode *)malloc(sizeof(PosNode));
+    if(new_node == NULL)
+    {
+        printf("Memory allocation failed");
+        return NULL;
+    }
+    new_node->line = line;
+    new_node->offset = offset;
+    new_node->seq = seq;
+    new_node->next = NULL;
+    return new_node;
+}
+
+//add a position at the end of doucment's postiion list
+static void appendPosition(DocNode *doc, PosNode *pos)
+{
+    if(doc->postail == NULL)
+    {
+        doc->positions = pos;
+        doc->postail = pos;
+    }
+    else
+    {
+        doc->postail->next = pos;
+        doc->postail = pos;    }
+}
+
 //add document to the document list
 void addDocument(WordNode *new_word_node,
-                 const char *filename)
+                 const char *filename,
+                int line, long offset, int seq)
 {
     DocNode *temp = new_word_node->document;
     //check if document already exists in list
@@ -47,6 +79,12 @@ void addDocument(WordNode *new_word_node,
     {
         if(strcmp(temp->filename, filename) == 0)
         {
+            PosNode *pos = createPosNode(line, offset, seq);
+            if(pos == NULL)
+            {
+                return;
+            }
+            appendPosition(temp, pos);
             temp->frequency++;
             return;
         }
@@ -58,19 +96,26 @@ void addDocument(WordNode *new_word_node,
     {
         return;
     }
-    
+    PosNode *pos = createPosNode(line, offset, seq);
+    if(pos == NULL)
+    {
+        free(new_document);
+        return;
+    }
+    appendPosition(new_document, pos);
     new_document->next   = new_word_node->document;
     new_word_node->document = new_document;
 }
 void insertWord(WordNode **head,
                 const char *word,
-                const char *filename)
+                const char *filename,
+                int line, long offset, int seq)
 {
     //check if word already exisst in hash bucekt
     WordNode *existing_word = lookUpHash(word);
     if(existing_word != NULL)
     {
-        addDocument(existing_word, filename);
+        addDocument(existing_word, filename, line, offset, seq);
         return;
     }
     //word does not exist so cerate new
@@ -82,7 +127,7 @@ void insertWord(WordNode **head,
     }
 
     //add document containing the word to the list
-    addDocument(new_word, filename);
+    addDocument(new_word, filename, line, offset, seq);
     new_word->next = *head;
     *head = new_word;
 
@@ -103,6 +148,13 @@ void displayIndex(WordNode *head)
         while(doc_current != NULL)
         {
             printf("Document : %s | Frequency : %d\n", doc_current->filename, doc_current->frequency);
+            PosNode *pos_current = doc_current->positions;
+            while(pos_current != NULL)
+            {
+                printf("    -> [Line: %d, Offset: %ld, Seq: %d]\n", 
+                       pos_current->line, pos_current->offset, pos_current->seq);
+                pos_current = pos_current->next;
+            }
             doc_current = doc_current->next;
         }
         word_current = word_current->next;

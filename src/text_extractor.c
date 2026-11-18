@@ -55,7 +55,10 @@ void extractText(const char *filename)
     }
     char word[100];
     int index = 0;
-    char ch;
+    int ch;
+    int line = 1;
+    long offset = 0L;
+    int seq = 0;
 
     //start reading the file
     while((ch = fgetc(file)) != EOF)
@@ -79,10 +82,15 @@ void extractText(const char *filename)
                 //check for filler
                 if(!isFiller(word))
                 {
-                    insertWord(&wordHead, word, filename);
+                    insertWord(&wordHead, word, filename, line, offset, seq);
                 }
                 //reset buffer
                 index = 0;
+            }
+            if(ch == '\n')
+            {
+                line++;
+                offset = ftell(file);
             }
         }
     }
@@ -93,7 +101,7 @@ void extractText(const char *filename)
 
         if (!isFiller(word))
         {
-            insertWord(&wordHead, word, filename);
+            insertWord(&wordHead, word, filename, line, offset, seq);
         }
     }
     //close file
